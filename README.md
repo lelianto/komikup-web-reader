@@ -1,4 +1,8 @@
-# KomikUp Scraper & Downloader (`scraper.py`)
+# KomikRoll
+
+Web reader komik + scraper. Konten bersumber dari [komikup.com](https://www.komikup.com/).
+
+## Scraper & Downloader (`scraper.py`)
 
 Script Python untuk mengambil (scrape) konten dari **[komikup.com](https://www.komikup.com/)**:
 1. **Daftar Komik & Metadata**: Update terbaru, direktori per tipe (`manga`, `manhwa`, `manhua`), filter abjad (`A-Z`), pencarian, serta daftar komik terpopuler (`daily`, `weekly`, `monthly`).

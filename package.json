@@ -1,8 +1,8 @@
 {
-  "name": "komikup-web-reader",
+  "name": "komikroll",
   "version": "1.0.0",
   "private": true,
-  "description": "Web Reader & Scraper untuk KomikUp API dengan Serverless Proxy Vercel",
+  "description": "KomikRoll - Web Reader & Scraper komik (sumber: KomikUp API) dengan Serverless Proxy Vercel",
   "scripts": {
     "start": "node dev-server.js"
   }
