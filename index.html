@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MangaReader - Web Komik Tanpa Iklan</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --card: #181b22;
+      --border: #262b36;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(15, 17, 21, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+    }
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .brand span { color: var(--primary); }
+    .nav-links {
+      display: flex;
+      gap: 8px;
+    }
+    .nav-btn {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .nav-btn.active, .nav-btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    .search-box {
+      display: flex;
+      gap: 6px;
+      flex: 1;
+      max-width: 320px;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 7px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 0.85rem;
+    }
+    .search-box button {
+      padding: 7px 14px;
+      border-radius: 6px;
+      border: none;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    main {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 16px 60px;
+    }
+    .section-title {
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--primary);
+    }
+    .card-thumb-wrap {
+      position: relative;
+      aspect-ratio: 2 / 3;
+      background: #111;
+    }
+    .card-thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(59, 130, 246, 0.9);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .card-body {
+      padding: 10px;
+    }
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .detail-box {
+      display: flex;
+      gap: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .detail-cover {
+      width: 200px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .detail-info h1 { font-size: 1.5rem; margin-bottom: 8px; }
+    .meta-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .tag {
+      background: #232834;
+      color: var(--muted);
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .synopsis { color: var(--muted); font-size: 0.9rem; white-space: pre-line; }
+    .chapter-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+    }
+    .chap-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+    }
+    .chap-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .reader-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .reader-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      background: var(--card);
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .reader-pages img {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      background: #111;
+      min-height: 220px;
+    }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 28px;
+    }
+    .status-msg {
+      text-align: center;
+      padding: 48px 16px;
+      color: var(--muted);
+    }
+    @media (max-width: 640px) {
+      .detail-box { flex-direction: column; align-items: center; text-align: center; }
+      .meta-tags { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand" onclick="loadNewest(1)">Manga<span>Up</span></div>
+      <div class="nav-links">
+        <button class="nav-btn active" id="nav-home" onclick="loadNewest(1)">Terbaru</button>
+        <button class="nav-btn" id="nav-manga" onclick="loadType('manga', 1)">Manga</button>
+        <button class="nav-btn" id="nav-manhwa" onclick="loadType('manhwa', 1)">Manhwa</button>
+        <button class="nav-btn" id="nav-manhua" onclick="loadType('manhua', 1)">Manhua</button>
+      </div>
+      <form class="search-box" onsubmit="handleSearch(event)">
+        <input type="text" id="searchInput" placeholder="Cari judul komik..." />
+        <button type="submit">Cari</button>
+      </form>
+    </div>
+  </header>
+
+  <main id="app">
+    <div class="status-msg">Memuat komik terbaru...</div>
+  </main>
+
+  <script>
+    const IMG_PROXY = "https://serveproxy.com/?url=";
+    let currentChapterList = [];
+    let currentComicEp = "";
+
+    function cleanEp(ep) {
+      if (!ep) return "";
+      if (ep.startsWith("http")) {
+        try { return new URL(ep).pathname; } catch (e) {}
+      }
+      return ep.startsWith("/") ? ep : "/" + ep;
+    }
+
+    function proxiedImg(url) {
+      if (!url) return "";
+      return url.startsWith(IMG_PROXY) ? url : IMG_PROXY + url;
+    }
+
+    async function apiGet(ep) {
+      const app = document.getElementById("app");
+      app.innerHTML = `<div class="status-msg">Memuat data...</div>`;
+      const res = await fetch(`/api/proxy?ep=${encodeURIComponent(ep)}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    }
+
+    function setActiveNav(id) {
+      document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+      const el = document.getElementById(id);
+      if (el) el.classList.add("active");
+    }
+
+    function renderGrid(title, items, paginationHtml = "") {
+      const app = document.getElementById("app");
+      if (!items || items.length === 0) {
+        app.innerHTML = `<h2 class="section-title">${title}</h2><div class="status-msg">Tidak ada komik ditemukan.</div>`;
+        return;
+      }
+      const cards = items.map(item => {
+        const ep = cleanEp(item.endpoint || item.slug);
+        const comicEp = ep.startsWith("/manga/") ? ep : `/manga/${ep.replace(/^\/|\/$/g, "")}/`;
+        const img = proxiedImg(item.image || item.cover || item.thumbnail);
+        return `
+          <div class="card" onclick="loadDetail('${comicEp}')">
+            <div class="card-thumb-wrap">
+              <span class="badge">${item.type || "Komik"}</span>
+              <img src="${img}" alt="${item.title}" referrerpolicy="no-referrer" loading="lazy" />
+            </div>
+            <div class="card-body">
+              <div class="card-title">${item.title}</div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      app.innerHTML = `
+        <h2 class="section-title">${title}</h2>
+        <div class="grid">${cards}</div>
+        ${paginationHtml}
+      `;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    async function loadNewest(page = 1) {
+      setActiveNav("nav-home");
+      try {
+        const json = await apiGet(`/comic/newest/page/${page}`);
+        const pager = `
+          <div class="pagination">
+            ${page > 1 ? `<button class="nav-btn" onclick="loadNewest(${page - 1})">&larr; Prev</button>` : ""}
+            <span>Halaman ${page}</span>
+            <button class="nav-btn" onclick="loadNewest(${page + 1})">Next &rarr;</button>
+          </div>
+        `;
+        renderGrid("Update Komik Terbaru", json.data || [], pager);
+      } catch (e) {
+        document.getElementById("app").innerHTML = `<div class="status-msg">Gagal memuat: ${e.message}</div>`;
+      }
+    }
+
+    async function loadType(type, page = 1) {
+      setActiveNav(`nav-${type}`);
+      try {
+        const json = await apiGet(`/comic/list?filter=${type}&page=${page}`);
+        const pager = `
+          <div class="pagination">
+            ${page > 1 ? `<button class="nav-btn" onclick="loadType('${type}', ${page - 1})">&larr; Prev</button>` : ""}
+            <span>Halaman ${page}</span>
+            <button class="nav-btn" onclick="loadType('${type}', ${page + 1})">Next &rarr;</button>
+          </div>
+        `;
+        renderGrid(`Daftar ${type.toUpperCase()}`, json.data || [], pager);
+      } catch (e) {
+        document.getElementById("app").innerHTML = `<div class="status-msg">Gagal memuat: ${e.message}</div>`;
+      }
+    }
+
+    async function handleSearch(e) {
+      e.preventDefault();
+      const q = document.getElementById("searchInput").value.trim();
+      if (!q) return;
+      setActiveNav("");
+      try {
+        const json = await apiGet(`/comic/search/${encodeURIComponent(q)}`);
+        renderGrid(`Hasil Pencarian: "${q}"`, json.data || []);
+      } catch (err) {
+        document.getElementById("app").innerHTML = `<div class="status-msg">Gagal mencari: ${err.message}</div>`;
+      }
+    }
+
+    async function loadDetail(ep) {
+      const clean = cleanEp(ep);
+      currentComicEp = clean;
+      try {
+        const json = await apiGet(`/comic/info${clean}`);
+        const info = json.data;
+        if (!info) throw new Error("Data komik kosong");
+        const chapters = info.chapter_list || info.chapters || [];
+        currentChapterList = chapters;
+
+        const genres = Array.isArray(info.genre)
+          ? info.genre
+          : (info.genre ? String(info.genre).split(",") : []);
+
+        const chapButtons = chapters.map(ch => {
+          const chEp = cleanEp(ch.endpoint);
+          const label = ch.name || ch.title || chEp;
+          return `<button class="chap-btn" onclick="loadChapter('${chEp}')">${label}</button>`;
+        }).join("");
+
+        document.getElementById("app").innerHTML = `
+          <div class="detail-box">
+            <img class="detail-cover" src="${proxiedImg(info.thumbnail)}" alt="${info.title}" referrerpolicy="no-referrer" />
+            <div class="detail-info">
+              <h1>${info.title}</h1>
+              <div class="meta-tags">
+                ${info.type ? `<span class="tag">${info.type}</span>` : ""}
+                ${info.author ? `<span class="tag">${info.author}</span>` : ""}
+                ${info.rating ? `<span class="tag">${info.rating}</span>` : ""}
+                ${genres.map(g => `<span class="tag">${g.trim()}</span>`).join("")}
+              </div>
+              <p class="synopsis">${info.description || "Tidak ada sinopsis."}</p>
+            </div>
+          </div>
+          <h2 class="section-title">Daftar Chapter (${chapters.length})</h2>
+          <div class="chapter-list">${chapButtons}</div>
+        `;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (err) {
+        document.getElementById("app").innerHTML = `<div class="status-msg">Gagal memuat detail: ${err.message}</div>`;
+      }
+    }
+
+    async function loadChapter(ep) {
+      const clean = cleanEp(ep);
+      try {
+        let json = await apiGet(`/comic/chapter${clean}`);
+        if (!json.data || !json.data.image || json.data.image.length === 0) {
+          const fallback = clean.startsWith("/baca/") ? clean.replace(/^\/baca/, "") : `/baca${clean}`;
+          json = await apiGet(`/comic/chapter${fallback}`);
+        }
+        const chap = json.data;
+        if (!chap || !chap.image) throw new Error("Gambar chapter tidak ditemukan");
+
+        const idx = currentChapterList.findIndex(c => cleanEp(c.endpoint) === clean);
+        const prevChap = idx >= 0 && idx + 1 < currentChapterList.length ? currentChapterList[idx + 1] : null;
+        const nextChap = idx > 0 ? currentChapterList[idx - 1] : null;
+
+        const navHtml = `
+          <div class="reader-nav">
+            <div>
+              ${currentComicEp ? `<button class="nav-btn" onclick="loadDetail('${currentComicEp}')">&larr; Detail Komik</button>` : `<button class="nav-btn" onclick="loadNewest(1)">&larr; Beranda</button>`}
+            </div>
+            <strong>${chap.title || clean}</strong>
+            <div style="display:flex; gap:8px;">
+              ${prevChap ? `<button class="nav-btn" onclick="loadChapter('${cleanEp(prevChap.endpoint)}')">Prev</button>` : ""}
+              ${nextChap ? `<button class="nav-btn" onclick="loadChapter('${cleanEp(nextChap.endpoint)}')">Next</button>` : ""}
+            </div>
+          </div>
+        `;
+
+        const imgsHtml = chap.image.map((raw, i) => {
+          const url = typeof raw === "string" ? raw : (raw.url || raw.image || "");
+          return `<img src="${proxiedImg(url)}" alt="Halaman ${i + 1}" referrerpolicy="no-referrer" loading="lazy" />`;
+        }).join("");
+
+        document.getElementById("app").innerHTML = `
+          <div class="reader-wrap">
+            ${navHtml}
+            <div class="reader-pages">${imgsHtml}</div>
+            <div style="margin-top: 16px;">${navHtml}</div>
+          </div>
+        `;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (err) {
+        document.getElementById("app").innerHTML = `<div class="status-msg">Gagal memuat chapter: ${err.message}</div>`;
+      }
+    }
+
+    loadNewest(1);
+  </script>
+</body>
+</html>
