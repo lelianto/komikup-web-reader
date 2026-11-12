@@ -22,9 +22,11 @@ const server = http.createServer(async (req, res) => {
     };
 
     try {
-      let apiRes = await fetch(`${PRIMARY_API}${cleanEp}`, { headers });
+      // Same order as api/proxy.js: search only works on api2.
+      const [first, second] = cleanEp.startsWith("/comic/search/") ? [FALLBACK_API, PRIMARY_API] : [PRIMARY_API, FALLBACK_API];
+      let apiRes = await fetch(`${first}${cleanEp}`, { headers });
       if (!apiRes.ok) {
-        apiRes = await fetch(`${FALLBACK_API}${cleanEp}`, { headers });
+        apiRes = await fetch(`${second}${cleanEp}`, { headers });
       }
       const data = await apiRes.text();
       res.writeHead(apiRes.status, {
