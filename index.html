@@ -274,6 +274,18 @@
       font-size: 0.86rem; font-weight: 600; line-height: 1.3;
       display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     }
+    /* Fixed line height is reserved up front so the grid does not jump when the count arrives. */
+    .card-meta {
+      display: block; height: 18px; line-height: 18px; margin-top: -2px;
+      font-size: 0.76rem; font-weight: 600; color: var(--muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .card-meta.pending { width: 60%; border-radius: 4px; background: var(--surface-2); position: relative; overflow: hidden; }
+    .card-meta.pending::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, var(--shimmer), transparent);
+      transform: translateX(-100%); animation: shimmer 1.3s ease-in-out infinite;
+    }
     .chapter-chip {
       align-self: flex-start;
       display: inline-flex; align-items: center; min-height: 32px; padding: 0 10px;
@@ -750,7 +762,66 @@
     }
 
     /* ---------------- Shared view pieces ---------------- */
-    function comicCard(item, { showLatest = false, defaultType = "", trackNew = false } = {}) {
+    /*
+      Card metadata (chapter count + status). The list API sends neither, so each visible card fetches
+      its detail page lazily, a few at a time. Results are cached in the browser for 6 hours.
+    */
+    const META_KEY = "kr:meta", META_TTL = 6 * 3600 * 1000, META_MAX = 1500;
+    let metaCache = store.get(META_KEY, {});
+    let metaSaveTimer = null;
+    const getMeta = (slug) => { const m = metaCache[slug]; return m && Date.now() - m.t < META_TTL ? m : null; };
+    function putMeta(slug, m) {
+      metaCache[slug] = { ...m, t: Date.now() };
+      clearTimeout(metaSaveTimer);
+      metaSaveTimer = setTimeout(() => {
+        const entries = Object.entries(metaCache);
+        if (entries.length > META_MAX) metaCache = Object.fromEntries(entries.sort((a, b) => b[1].t - a[1].t).slice(0, META_MAX));
+        store.set(META_KEY, metaCache);
+      }, 500);
+    }
+    const statusLabel = (s) => (/^(completed|end|tamat)$/i.test(s) ? "Tamat" : /^ongoing$/i.test(s) ? "Ongoing" : /^hiatus$/i.test(s) ? "Hiatus" : "");
+    function metaText(m) {
+      if (!m || m.n === null) return "";
+      const parts = [`${m.n} ch`];
+      const st = statusLabel(m.status);
+      if (st) parts.push(st);
+      return parts.join(" · ");
+    }
+    function fillMeta(el, m) {
+      el.classList.remove("pending");
+      el.textContent = metaText(m);
+      if (el.textContent) el.setAttribute("aria-label", `${m.n} chapter${statusLabel(m.status) ? `, ${statusLabel(m.status)}` : ""}`);
+    }
+
+    let metaObserver = null;
+    function watchCardMeta(root) {
+      if (metaObserver) metaObserver.disconnect();
+      const queue = [];
+      let active = 0;
+      const pump = () => {
+        while (active < 4 && queue.length) {
+          const el = queue.shift();
+          if (!el.isConnected) continue;
+          const slug = el.dataset.metaSlug;
+          active++;
+          getComic(slug)
+            .then((c) => { const m = c ? { n: c.chapters.length, status: c.status } : { n: null, status: "" }; putMeta(slug, m); return m; })
+            .catch(() => null)
+            .then((m) => { if (el.isConnected) fillMeta(el, m); active--; pump(); });
+        }
+      };
+      metaObserver = new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          if (!en.isIntersecting) return;
+          metaObserver.unobserve(en.target);
+          queue.push(en.target);
+        });
+        pump();
+      }, { rootMargin: "300px 0px" });
+      root.querySelectorAll(".card-meta.pending").forEach((el) => metaObserver.observe(el));
+    }
+
+    function comicCard(item, { showLatest = false, defaultType = "", trackNew = false, withMeta = false } = {}) {
       const slug = slugFromEp(item.endpoint || item.slug);
       const title = item.title || slug;
       const type = item.type || defaultType;
@@ -764,6 +835,11 @@
             ${coverHtml(item.image || item.cover || item.thumbnail, title, { type })}
             <span class="card-title">${esc(title)}</span>
           </a>
+          ${withMeta ? (() => {
+            const m = getMeta(slug);
+            return m ? `<span class="card-meta" ${metaText(m) ? `aria-label="${m.n} chapter${statusLabel(m.status) ? `, ${statusLabel(m.status)}` : ""}"` : ""}>${esc(metaText(m))}</span>`
+                     : `<span class="card-meta pending" data-meta-slug="${esc(slug)}"></span>`;
+          })() : ""}
           ${latest}
         </article>`;
     }
@@ -864,6 +940,7 @@
       const token = ++renderToken;
       const seg = path.split("/").filter(Boolean).map(decodeURIComponent);
       if (readerCleanup) { readerCleanup(); readerCleanup = null; }
+      if (metaObserver) { metaObserver.disconnect(); metaObserver = null; }
       document.body.classList.toggle("reading", seg[0] === "read");
       const tab = seg[0] || "home";
       setTab(["home", "browse", "top", "library", "search"].includes(tab) ? tab : "");
@@ -978,7 +1055,8 @@
             : stateHtml({ title: "Belum ada judul", body: `Tidak ada ${typeLabel(type)} yang berawalan ${letter}. Coba huruf lain.`, actions: `<a class="btn" href="${hrefFor({ huruf: "" })}">Lihat semua</a>` });
           return;
         }
-        gridEl.innerHTML = `<div class="grid">${items.map((it) => comicCard(it, { defaultType: type })).join("")}</div>`;
+        gridEl.innerHTML = `<div class="grid">${items.map((it) => comicCard(it, { defaultType: type, withMeta: true })).join("")}</div>`;
+        watchCardMeta(gridEl);
         mountPager(document.getElementById("browsePager"), page, items.length, LIST_PAGE_SIZE, `${base}&page=${page + 1}`, (p) => hrefFor({ page: p }));
         finishRender(token, key);
       } catch (err) {
@@ -1077,7 +1155,8 @@
         }
         const recent = [q, ...store.get("kr:recentSearch", []).filter((r) => r.toLowerCase() !== q.toLowerCase())].slice(0, 8);
         store.set("kr:recentSearch", recent);
-        box.innerHTML = `<p class="small muted" style="margin-bottom:12px">${items.length} hasil untuk “${esc(q)}”</p><div class="grid">${items.map((it) => comicCard(it)).join("")}</div>`;
+        box.innerHTML = `<p class="small muted" style="margin-bottom:12px">${items.length} hasil untuk “${esc(q)}”</p><div class="grid">${items.map((it) => comicCard(it, { withMeta: true })).join("")}</div>`;
+        watchCardMeta(box);
       } catch (err) {
         if (myToken === renderToken) box.innerHTML = errorState(err, "hasil pencarian");
       }
@@ -1193,6 +1272,7 @@
       }
       setTitle(comic.title);
       markSeen(comic);
+      putMeta(slug, { n: comic.chapters.length, status: comic.status });
       const h = hist()[slug];
       const readSet = new Set(h?.read || []);
       const first = comic.chapters[comic.chapters.length - 1];
