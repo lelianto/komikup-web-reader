@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://komikup-web-reader.vercel.app/sitemap.xml
+Sitemap: https://komikroll.vercel.app/sitemap.xml
