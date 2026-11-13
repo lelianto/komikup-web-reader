@@ -3,14 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>KomikRoll</title>
-  <meta name="description" content="Baca manga, manhwa, dan manhua bahasa Indonesia dengan nyaman di HP." />
+  <title>KomikRoll · Baca Manga, Manhwa & Manhua Bahasa Indonesia</title>
+  <meta name="description" content="Baca manga, manhwa, dan manhua bahasa Indonesia gratis di KomikRoll. Update chapter terbaru tiap hari, komik populer, riwayat baca, dan pembaca yang nyaman di HP." />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="application-name" content="KomikRoll" />
+  <link rel="canonical" href="https://komikup-web-reader.vercel.app/" />
+
+  <!-- Open Graph / social previews -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="KomikRoll" />
+  <meta property="og:locale" content="id_ID" />
+  <meta property="og:url" content="https://komikup-web-reader.vercel.app/" />
+  <meta property="og:title" content="KomikRoll · Baca Manga, Manhwa & Manhua Bahasa Indonesia" />
+  <meta property="og:description" content="Update chapter terbaru tiap hari, komik populer, dan pembaca yang nyaman di HP." />
+  <meta property="og:image" content="https://komikup-web-reader.vercel.app/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="KomikRoll, baca komik bahasa Indonesia" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="KomikRoll · Baca Manga, Manhwa & Manhua Bahasa Indonesia" />
+  <meta name="twitter:description" content="Update chapter terbaru tiap hari, komik populer, dan pembaca yang nyaman di HP." />
+  <meta name="twitter:image" content="https://komikup-web-reader.vercel.app/og-image.png" />
+
+  <!-- Icons & install -->
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#F7F5F2" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#121110" media="(prefers-color-scheme: dark)" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="KomikRoll" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "KomikRoll",
+    "alternateName": "Komik Roll",
+    "url": "https://komikup-web-reader.vercel.app/",
+    "inLanguage": "id-ID",
+    "description": "Baca manga, manhwa, dan manhua bahasa Indonesia dengan nyaman di HP."
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://serveproxy.com" />
@@ -132,6 +170,8 @@
       background: transparent; border: 0; color: var(--text);
     }
     .icon-btn:hover { background: var(--surface-2); }
+    /* Language switch: the current language code as text, so it reads at a glance without a flag. */
+    .lang-btn { font-weight: 800; font-size: 0.82rem; letter-spacing: 0.02em; }
     .icon-btn:active { transform: scale(0.94); }
     .desktop-nav { display: none; }
 
@@ -519,30 +559,31 @@
     <symbol id="i-sort" viewBox="0 0 24 24"><path d="M7 4v16M3 16l4 4 4-4M17 20V4M13 8l4-4 4 4"/></symbol>
   </svg>
 
-  <a class="sr-only" href="#app">Lewati ke konten</a>
+  <a class="sr-only" href="#app" data-i18n="skip">Lewati ke konten</a>
 
   <header class="site-header">
     <div class="header-inner">
-      <a class="brand" href="#/" aria-label="KomikRoll, ke beranda">Komik<span>Roll</span></a>
-      <nav class="desktop-nav" aria-label="Navigasi utama">
-        <a href="#/" data-tab="home">Beranda</a>
-        <a href="#/browse" data-tab="browse">Jelajah</a>
-        <a href="#/top" data-tab="top">Populer</a>
-        <a href="#/library" data-tab="library">Pustaka</a>
+      <a class="brand" href="#/" data-i18n-aria="brandHome" aria-label="KomikRoll, ke beranda">Komik<span>Roll</span></a>
+      <nav class="desktop-nav" data-i18n-aria="mainNav" aria-label="Navigasi utama">
+        <a href="#/" data-tab="home" data-i18n="home">Beranda</a>
+        <a href="#/browse" data-tab="browse" data-i18n="browse">Jelajah</a>
+        <a href="#/top" data-tab="top" data-i18n="top">Populer</a>
+        <a href="#/library" data-tab="library" data-i18n="library">Pustaka</a>
       </nav>
-      <a class="icon-btn" href="#/search" aria-label="Cari komik" data-tab="search"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></a>
+      <a class="icon-btn" href="#/search" data-i18n-aria="searchComics" aria-label="Cari komik" data-tab="search"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></a>
+      <button class="icon-btn lang-btn" id="langBtn" type="button" aria-label="Bahasa: Indonesia. Ketuk untuk ganti ke English">ID</button>
       <button class="icon-btn" id="themeBtn" type="button" aria-label="Tema: ikuti sistem"><svg class="icon" aria-hidden="true"><use href="#i-auto"/></svg></button>
     </div>
   </header>
 
   <main id="app" tabindex="-1"></main>
 
-  <nav class="tabbar" aria-label="Navigasi utama">
+  <nav class="tabbar" data-i18n-aria="mainNav" aria-label="Navigasi utama">
     <ul>
-      <li><a class="tab" href="#/" data-tab="home"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Beranda</a></li>
-      <li><a class="tab" href="#/browse" data-tab="browse"><svg class="icon" aria-hidden="true"><use href="#i-browse"/></svg>Jelajah</a></li>
-      <li><a class="tab" href="#/top" data-tab="top"><svg class="icon" aria-hidden="true"><use href="#i-chart"/></svg>Populer</a></li>
-      <li><a class="tab" href="#/library" data-tab="library"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg>Pustaka</a></li>
+      <li><a class="tab" href="#/" data-tab="home"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg><span data-i18n="home">Beranda</span></a></li>
+      <li><a class="tab" href="#/browse" data-tab="browse"><svg class="icon" aria-hidden="true"><use href="#i-browse"/></svg><span data-i18n="browse">Jelajah</span></a></li>
+      <li><a class="tab" href="#/top" data-tab="top"><svg class="icon" aria-hidden="true"><use href="#i-chart"/></svg><span data-i18n="top">Populer</span></a></li>
+      <li><a class="tab" href="#/library" data-tab="library"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg><span data-i18n="library">Pustaka</span></a></li>
     </ul>
   </nav>
 
@@ -569,6 +610,118 @@
       },
     };
 
+    /* ---------------- Interface language (ID / EN) ----------------
+       Only the app's own interface is translated; comic titles, synopses and chapter names stay as
+       the source provides them. */
+    const I18N = {
+      id: {
+        locale: "id-ID", langName: "Bahasa Indonesia", langSwitch: "Bahasa: Indonesia. Ketuk untuk ganti ke English",
+        skip: "Lewati ke konten", mainNav: "Navigasi utama", brandHome: "KomikRoll, ke beranda", searchComics: "Cari komik",
+        home: "Beranda", browse: "Jelajah", top: "Populer", library: "Pustaka",
+        themeName: { system: "ikuti sistem", light: "terang", dark: "gelap" },
+        themeAria: (l) => `Tema: ${l}. Ketuk untuk ganti`, themeToast: (l) => `Tema ${l}`,
+        justNow: "baru saja", minAgo: (n) => `${n} menit lalu`, hrAgo: (n) => `${n} jam lalu`, dayAgo: (n) => `${n} hari lalu`,
+        serverReplied: (s) => `Server membalas ${s}`,
+        newBadge: (n) => `${n} baru`, newAria: (n) => `${n} chapter baru`, pageProgress: (p, t) => ` · hal. ${p}/${t}`,
+        coverAlt: (t) => `Sampul ${t}`, status: { done: "Tamat", ongoing: "Ongoing", hiatus: "Hiatus" },
+        chapters: (n) => `${n} chapter`, readChapterAria: (c, t) => `Baca ${c} ${t}`, loading: (w) => `Memuat ${w}…`,
+        offlineTitle: "Kamu sedang offline", offlineBody: "Sambungkan internet, lalu coba lagi.",
+        failedTitle: (w) => `Gagal memuat ${w}`, failedBody: (m) => `Server sumber tidak merespons (${m}). Biasanya pulih dalam beberapa saat.`, retry: "Coba lagi",
+        prevPage: "Halaman sebelumnya", nextPage: "Halaman berikutnya", pageN: (n) => `Halaman ${n}`, lastPage: "Ini halaman terakhir", pagerNav: "Pindah halaman",
+        notFound: "Tidak ditemukan", pageNotFound: "Halaman tidak ditemukan", pageNotFoundBody: "Alamat ini tidak ada di KomikRoll.", toHome: "Ke beranda", wPage: "halaman",
+        homeH1: "Beranda KomikRoll", continueReading: "Lanjut baca", allHistory: "Semua riwayat", continueAria: (t, c) => `Lanjut baca ${t}, ${c}`,
+        latestUpdates: "Update terbaru", wLatest: "update terbaru", emptyPage: "Halaman ini kosong", emptyHomeBody: (n) => `Tidak ada update di halaman ${n}.`, toPage1: "Ke halaman 1",
+        browseTitle: (t, l) => `Jelajah ${t}${l ? ` ${l}` : ""}`, comicType: "Tipe komik", letterFilter: "Filter abjad", all: "Semua", letterAria: (l) => `Huruf ${l}`,
+        browseSummary: (t, l, p) => `${t}${l ? `, berawalan ${l}` : ", semua judul"} · halaman ${p}`,
+        endReached: "Sudah sampai ujung", endBody: (p) => `Halaman ${p} tidak berisi judul lagi.`, noTitles: "Belum ada judul",
+        noTitlesBody: (t, l) => `Tidak ada ${t} yang berawalan ${l}. Coba huruf lain.`, seeAll: "Lihat semua", wList: "daftar komik",
+        periods: { daily: "Harian", weekly: "Mingguan", monthly: "Bulanan" }, topTitle: (p) => `Populer ${p}`, period: "Periode", wTop: "komik populer",
+        rankUpdated: (d) => `Peringkat diperbarui ${d}`, noRank: "Peringkat belum tersedia", noRankBody: (p) => `Belum ada data populer ${p.toLowerCase()}. Coba periode lain.`,
+        rankAria: (n) => `Peringkat ${n}`, views: (n) => `${n} kali dibuka`, wRank: "peringkat",
+        search: "Cari", searchH1: "Cari komik", searchLabel: "Judul komik", searchPh: "Contoh: solo leveling", recentSearches: "Pencarian terakhir", clear: "Hapus",
+        searchHint: "Ketik minimal 2 huruf. Hasil muncul otomatis.", wResults: "hasil pencarian", noResults: (q) => `Tidak ada hasil untuk “${q}”`,
+        noResultsBody: "Coba kata kunci yang lebih pendek, atau cari lewat Jelajah per abjad.", openBrowse: "Buka Jelajah", resultsFor: (n, q) => `${n} hasil untuk “${q}”`,
+        libSections: "Isi pustaka", saved: "Tersimpan", history: "Riwayat", localOnly: "Disimpan di browser ini saja.",
+        noSaved: "Belum ada komik tersimpan", noSavedBody: "Buka halaman komik lalu ketuk Simpan. Komiknya akan muncul di sini.", seePopular: "Lihat yang populer",
+        continueBtn: "Lanjut", continueBtnAria: (t) => `Lanjut baca ${t}`, clearHistory: "Hapus semua riwayat", noHistory: "Riwayat masih kosong",
+        noHistoryBody: "Chapter yang kamu baca akan tercatat di sini, jadi gampang dilanjutkan.", seeLatest: "Lihat update terbaru",
+        confirmClear: "Hapus semua riwayat baca? Tanda chapter yang sudah dibaca juga ikut hilang.", historyCleared: "Riwayat dihapus",
+        loadingTitle: "Memuat…", wDetail: "detail komik", comicNotFound: "Komik tidak ditemukan", comicNotFoundBody: "Judul ini mungkin sudah dihapus dari sumber.",
+        searchOther: "Cari judul lain", continueCh: (c, p) => `Lanjut ${c}${p}`, startCh: (c) => `Mulai baca ${c}`, noChapters: "Belum ada chapter",
+        noChaptersBody: "Sumber belum menyediakan chapter untuk judul ini.", by: (a) => `oleh ${a}`, save: "Simpan", synopsis: "Sinopsis", more: "Selengkapnya", less: "Ringkas",
+        genre: "Genre", chapterList: "Daftar chapter", findChapter: "Cari nomor chapter", sortAria: (n) => `Urutan: ${n ? "terbaru" : "terlama"} dulu`, newest: "Terbaru", oldest: "Terlama",
+        noChapterMatch: (q) => `Tidak ada chapter bernomor “${q}”.`, lastRead: "Terakhir dibaca", alreadyRead: "Sudah dibaca",
+        showMore: (n, r) => `Tampilkan ${n} lagi (sisa ${r})`, savedToast: "Disimpan ke Pustaka", removedToast: "Dihapus dari Pustaka",
+        reading: "Membaca", backToDetail: "Kembali ke detail komik", loadingChapter: "Memuat chapter…", wPages: "halaman chapter", wChapter: "chapter",
+        chapterUnavailable: "Chapter tidak bisa dibuka", chapterUnavailableBody: "Gambar chapter ini tidak tersedia di sumber.", backToList: "Kembali ke daftar chapter",
+        prevChAria: (t) => `Chapter sebelumnya: ${t}`, nextChAria: (t) => `Chapter berikutnya: ${t}`, noPrev: "Tidak ada chapter sebelumnya", noNext: "Belum ada chapter berikutnya",
+        prevShort: "Seb.", nextShort: "Lanjut", backTo: (t) => `Kembali ke ${t}`, pageAlt: (n) => `Halaman ${n}`, pageFailed: (n) => `Halaman ${n} gagal dimuat`, reload: "Muat ulang",
+        finished: (t) => `Selesai: ${t}`, nextUp: (t) => `Berikutnya: ${t}`, latestAvailable: "Ini chapter terbaru yang tersedia.", readCh: (c) => `Baca ${c}`,
+        chapterNav: "Navigasi chapter", pickChapter: "Pilih chapter", close: "Tutup", nowReading: "Sedang dibaca", resumeToast: (n) => `Lanjut dari halaman ${n}`,
+      },
+      en: {
+        locale: "en-US", langName: "English", langSwitch: "Language: English. Tap to switch to Bahasa Indonesia",
+        skip: "Skip to content", mainNav: "Main navigation", brandHome: "KomikRoll, go home", searchComics: "Search comics",
+        home: "Home", browse: "Browse", top: "Popular", library: "Library",
+        themeName: { system: "follow system", light: "light", dark: "dark" },
+        themeAria: (l) => `Theme: ${l}. Tap to change`, themeToast: (l) => `Theme: ${l}`,
+        justNow: "just now", minAgo: (n) => `${n} min ago`, hrAgo: (n) => `${n} h ago`, dayAgo: (n) => `${n} days ago`,
+        serverReplied: (s) => `Server replied ${s}`,
+        newBadge: (n) => `${n} new`, newAria: (n) => `${n} new chapters`, pageProgress: (p, t) => ` · p. ${p}/${t}`,
+        coverAlt: (t) => `Cover of ${t}`, status: { done: "Completed", ongoing: "Ongoing", hiatus: "Hiatus" },
+        chapters: (n) => `${n} chapters`, readChapterAria: (c, t) => `Read ${c} of ${t}`, loading: (w) => `Loading ${w}…`,
+        offlineTitle: "You are offline", offlineBody: "Connect to the internet, then try again.",
+        failedTitle: (w) => `Couldn't load ${w}`, failedBody: (m) => `The source server didn't respond (${m}). It usually recovers in a moment.`, retry: "Try again",
+        prevPage: "Previous page", nextPage: "Next page", pageN: (n) => `Page ${n}`, lastPage: "This is the last page", pagerNav: "Change page",
+        notFound: "Not found", pageNotFound: "Page not found", pageNotFoundBody: "This address doesn't exist on KomikRoll.", toHome: "Go home", wPage: "the page",
+        homeH1: "KomikRoll home", continueReading: "Continue reading", allHistory: "All history", continueAria: (t, c) => `Continue reading ${t}, ${c}`,
+        latestUpdates: "Latest updates", wLatest: "latest updates", emptyPage: "This page is empty", emptyHomeBody: (n) => `No updates on page ${n}.`, toPage1: "Go to page 1",
+        browseTitle: (t, l) => `Browse ${t}${l ? ` ${l}` : ""}`, comicType: "Comic type", letterFilter: "Filter by letter", all: "All", letterAria: (l) => `Letter ${l}`,
+        browseSummary: (t, l, p) => `${t}${l ? `, starting with ${l}` : ", all titles"} · page ${p}`,
+        endReached: "You've reached the end", endBody: (p) => `Page ${p} has no more titles.`, noTitles: "No titles yet",
+        noTitlesBody: (t, l) => `No ${t} titles start with ${l}. Try another letter.`, seeAll: "See all", wList: "the comic list",
+        periods: { daily: "Daily", weekly: "Weekly", monthly: "Monthly" }, topTitle: (p) => `Popular ${p}`, period: "Period", wTop: "popular comics",
+        rankUpdated: (d) => `Rankings updated ${d}`, noRank: "Rankings not available yet", noRankBody: (p) => `No ${p.toLowerCase()} rankings yet. Try another period.`,
+        rankAria: (n) => `Rank ${n}`, views: (n) => `${n} views`, wRank: "rankings",
+        search: "Search", searchH1: "Search comics", searchLabel: "Comic title", searchPh: "Example: solo leveling", recentSearches: "Recent searches", clear: "Clear",
+        searchHint: "Type at least 2 letters. Results appear automatically.", wResults: "search results", noResults: (q) => `No results for “${q}”`,
+        noResultsBody: "Try a shorter keyword, or find it in Browse by letter.", openBrowse: "Open Browse", resultsFor: (n, q) => `${n} results for “${q}”`,
+        libSections: "Library sections", saved: "Saved", history: "History", localOnly: "Stored in this browser only.",
+        noSaved: "No saved comics yet", noSavedBody: "Open a comic and tap Save. It will show up here.", seePopular: "See what's popular",
+        continueBtn: "Continue", continueBtnAria: (t) => `Continue reading ${t}`, clearHistory: "Clear all history", noHistory: "No reading history yet",
+        noHistoryBody: "Chapters you read are recorded here so you can pick up where you left off.", seeLatest: "See latest updates",
+        confirmClear: "Clear all reading history? Read-chapter marks will be removed too.", historyCleared: "History cleared",
+        loadingTitle: "Loading…", wDetail: "comic details", comicNotFound: "Comic not found", comicNotFoundBody: "This title may have been removed from the source.",
+        searchOther: "Search another title", continueCh: (c, p) => `Continue ${c}${p}`, startCh: (c) => `Start reading ${c}`, noChapters: "No chapters yet",
+        noChaptersBody: "The source has no chapters for this title yet.", by: (a) => `by ${a}`, save: "Save", synopsis: "Synopsis", more: "Show more", less: "Show less",
+        genre: "Genre", chapterList: "Chapters", findChapter: "Find chapter number", sortAria: (n) => `Order: ${n ? "newest" : "oldest"} first`, newest: "Newest", oldest: "Oldest",
+        noChapterMatch: (q) => `No chapter numbered “${q}”.`, lastRead: "Last read", alreadyRead: "Read",
+        showMore: (n, r) => `Show ${n} more (${r} left)`, savedToast: "Saved to Library", removedToast: "Removed from Library",
+        reading: "Reading", backToDetail: "Back to comic details", loadingChapter: "Loading chapter…", wPages: "chapter pages", wChapter: "the chapter",
+        chapterUnavailable: "Can't open this chapter", chapterUnavailableBody: "This chapter's images aren't available at the source.", backToList: "Back to chapter list",
+        prevChAria: (t) => `Previous chapter: ${t}`, nextChAria: (t) => `Next chapter: ${t}`, noPrev: "No previous chapter", noNext: "No next chapter yet",
+        prevShort: "Prev", nextShort: "Next", backTo: (t) => `Back to ${t}`, pageAlt: (n) => `Page ${n}`, pageFailed: (n) => `Page ${n} failed to load`, reload: "Reload",
+        finished: (t) => `Finished: ${t}`, nextUp: (t) => `Next: ${t}`, latestAvailable: "This is the latest available chapter.", readCh: (c) => `Read ${c}`,
+        chapterNav: "Chapter navigation", pickChapter: "Choose chapter", close: "Close", nowReading: "Reading now", resumeToast: (n) => `Resuming from page ${n}`,
+      },
+    };
+    const LANGS = ["id", "en"];
+    let lang = store.get("kr:lang", null);
+    if (!LANGS.includes(lang)) lang = /^id\b/i.test(navigator.language || "") ? "id" : "en";
+    // t("key") returns the string; t("key", a, b) calls the entry when it is a function.
+    function t(key, ...args) {
+      const v = I18N[lang][key] ?? I18N.id[key];
+      return typeof v === "function" ? v(...args) : v;
+    }
+    // Static markup carries data-i18n (text) and data-i18n-aria (aria-label) keys.
+    function applyStaticText() {
+      document.documentElement.lang = lang;
+      document.querySelectorAll("[data-i18n]").forEach((el) => { el.textContent = t(el.dataset.i18n); });
+      document.querySelectorAll("[data-i18n-aria]").forEach((el) => el.setAttribute("aria-label", t(el.dataset.i18nAria)));
+      const lb = document.getElementById("langBtn");
+      if (lb) { lb.textContent = lang.toUpperCase(); lb.setAttribute("aria-label", t("langSwitch")); }
+    }
+
     function cleanEp(ep) {
       if (!ep) return "";
       let v = String(ep).trim();
@@ -591,11 +744,11 @@
 
     function timeAgo(ts) {
       const s = Math.max(1, Math.round((Date.now() - ts) / 1000));
-      if (s < 60) return "baru saja";
-      const m = Math.round(s / 60); if (m < 60) return `${m} menit lalu`;
-      const h = Math.round(m / 60); if (h < 24) return `${h} jam lalu`;
-      const d = Math.round(h / 24); if (d < 30) return `${d} hari lalu`;
-      return new Date(ts).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
+      if (s < 60) return t("justNow");
+      const m = Math.round(s / 60); if (m < 60) return t("minAgo", m);
+      const h = Math.round(m / 60); if (h < 24) return t("hrAgo", h);
+      const d = Math.round(h / 24); if (d < 30) return t("dayAgo", d);
+      return new Date(ts).toLocaleDateString(t("locale"), { day: "numeric", month: "short", year: "numeric" });
     }
 
     let toastTimer;
@@ -616,7 +769,7 @@
           try { json = await res.json(); } catch (e) {}
           // The source API answers "no data" with 404; treat that as empty, not as a failure.
           if (res.status === 404 || (json && json.code === 404)) return { data: null, empty: true };
-          if (!res.ok || !json) throw new Error(`Server membalas ${res.status}`);
+          if (!res.ok || !json) throw new Error(t("serverReplied", res.status));
           return json;
         })
         .catch((err) => { cache.delete(ep); throw err; });
@@ -668,9 +821,9 @@
           const n = newChapterCount(slug, comic);
           const cover = el.querySelector(".cover");
           if (!n || !cover || cover.querySelector(".new-badge")) continue;
-          cover.insertAdjacentHTML("beforeend", `<span class="new-badge">${n > 99 ? "99+" : n} baru</span>`);
+          cover.insertAdjacentHTML("beforeend", `<span class="new-badge">${t("newBadge", n > 99 ? "99+" : n)}</span>`);
           const label = el.querySelector(".card-link, .row-main a");
-          if (label) label.setAttribute("aria-description", `${n} chapter baru`);
+          if (label) label.setAttribute("aria-description", t("newAria", n));
         }
       };
       await Promise.all([worker(), worker(), worker()]);
@@ -702,18 +855,17 @@
     }
     // A saved page is worth resuming only when the reader was mid-chapter.
     const resumablePage = (it) => (it && it.page > 1 && it.total && it.page < it.total ? it.page : 0);
-    const progressLabel = (it) => { const p = resumablePage(it); return p ? ` · hal. ${p}/${it.total}` : ""; };
+    const progressLabel = (it) => { const p = resumablePage(it); return p ? t("pageProgress", p, it.total) : ""; };
 
     /* ---------------- Theme ---------------- */
     const themeBtn = document.getElementById("themeBtn");
     const THEME_ORDER = ["system", "light", "dark"];
-    const THEME_META = { system: ["auto", "ikuti sistem"], light: ["sun", "terang"], dark: ["moon", "gelap"] };
+    const THEME_ICON = { system: "auto", light: "sun", dark: "moon" };
     function applyTheme(mode) {
       if (mode === "system") document.documentElement.removeAttribute("data-theme");
       else document.documentElement.setAttribute("data-theme", mode);
-      const [ic, label] = THEME_META[mode];
-      themeBtn.innerHTML = icon(ic);
-      themeBtn.setAttribute("aria-label", `Tema: ${label}. Ketuk untuk ganti`);
+      themeBtn.innerHTML = icon(THEME_ICON[mode]);
+      themeBtn.setAttribute("aria-label", t("themeAria", t("themeName")[mode]));
       const bg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim();
       document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
         if (mode === "system") m.setAttribute("content", m.media.includes("dark") ? "#121110" : "#F7F5F2");
@@ -727,7 +879,20 @@
       themeMode = THEME_ORDER[(THEME_ORDER.indexOf(themeMode) + 1) % THEME_ORDER.length];
       store.set("kr:theme", themeMode);
       applyTheme(themeMode);
-      toast(`Tema ${THEME_META[themeMode][1]}`);
+      toast(t("themeToast", t("themeName")[themeMode]));
+    });
+
+    /* ---------------- Language switch ---------------- */
+    applyStaticText();
+    document.getElementById("langBtn").addEventListener("click", () => {
+      lang = lang === "id" ? "en" : "id";
+      store.set("kr:lang", lang);
+      applyStaticText();
+      applyTheme(themeMode);
+      // Re-render the current view in the new language and keep the reader where they were.
+      scrollMemory.set(parseHash().key, window.scrollY);
+      route();
+      toast(t("langName"));
     });
 
     /* ---------------- Image load / error handling ---------------- */
@@ -754,7 +919,7 @@
         return `<div class="cover empty"><span class="cover-fallback" aria-hidden="true">${esc(initials(title))}</span>${tl ? `<span class="type-label">${tl}</span>` : ""}</div>`;
       }
       return `<div class="cover">
-          <img src="${esc(proxied(url))}" data-direct="${esc(directOf(url))}" alt="Sampul ${esc(title)}" width="${w}" height="${Math.round(w * 1.5)}"
+          <img src="${esc(proxied(url))}" data-direct="${esc(directOf(url))}" alt="${esc(t("coverAlt", title))}" width="${w}" height="${Math.round(w * 1.5)}"
             referrerpolicy="no-referrer" ${eager ? 'fetchpriority="high"' : 'loading="lazy" decoding="async"'} />
           <span class="cover-fallback" aria-hidden="true">${esc(initials(title))}</span>
           ${tl ? `<span class="type-label">${tl}</span>` : ""}
@@ -779,7 +944,8 @@
         store.set(META_KEY, metaCache);
       }, 500);
     }
-    const statusLabel = (s) => (/^(completed|end|tamat)$/i.test(s) ? "Tamat" : /^ongoing$/i.test(s) ? "Ongoing" : /^hiatus$/i.test(s) ? "Hiatus" : "");
+    const statusLabel = (s) => (/^(completed|end|tamat)$/i.test(s) ? t("status").done : /^ongoing$/i.test(s) ? t("status").ongoing : /^hiatus$/i.test(s) ? t("status").hiatus : "");
+    const metaAria = (m) => `${t("chapters", m.n)}${statusLabel(m.status) ? `, ${statusLabel(m.status)}` : ""}`;
     function metaText(m) {
       if (!m || m.n === null) return "";
       const parts = [`${m.n} ch`];
@@ -790,7 +956,7 @@
     function fillMeta(el, m) {
       el.classList.remove("pending");
       el.textContent = metaText(m);
-      if (el.textContent) el.setAttribute("aria-label", `${m.n} chapter${statusLabel(m.status) ? `, ${statusLabel(m.status)}` : ""}`);
+      if (el.textContent) el.setAttribute("aria-label", metaAria(m));
     }
 
     let metaObserver = null;
@@ -828,7 +994,7 @@
       let latest = "";
       if (showLatest && Array.isArray(item.chapters) && item.chapters.length) {
         const ch = [...item.chapters].sort((a, b) => (chapterNum(b.title) ?? 0) - (chapterNum(a.title) ?? 0))[0];
-        if (ch && ch.endpoint) latest = `<a class="chapter-chip" href="${readHref(ch.endpoint, slug)}" aria-label="Baca ${esc(ch.title)} ${esc(title)}">${esc(shortChapter(ch.title))}</a>`;
+        if (ch && ch.endpoint) latest = `<a class="chapter-chip" href="${readHref(ch.endpoint, slug)}" aria-label="${esc(t("readChapterAria", ch.title, title))}">${esc(shortChapter(ch.title))}</a>`;
       }
       return `<article class="card" ${trackNew ? `data-new-slug="${esc(slug)}"` : ""}>
           <a class="card-link" href="${comicHref(slug, type)}">
@@ -837,7 +1003,7 @@
           </a>
           ${withMeta ? (() => {
             const m = getMeta(slug);
-            return m ? `<span class="card-meta" ${metaText(m) ? `aria-label="${m.n} chapter${statusLabel(m.status) ? `, ${statusLabel(m.status)}` : ""}"` : ""}>${esc(metaText(m))}</span>`
+            return m ? `<span class="card-meta" ${metaText(m) ? `aria-label="${esc(metaAria(m))}"` : ""}>${esc(metaText(m))}</span>`
                      : `<span class="card-meta pending" data-meta-slug="${esc(slug)}"></span>`;
           })() : ""}
           ${latest}
@@ -852,7 +1018,7 @@
       return `<div aria-hidden="true">${Array.from({ length: n }, () =>
         `<div class="rank-item"><div class="sk" style="height:28px;width:28px;margin:auto"></div><div class="sk sk-cover" style="border-radius:6px"></div><div><div class="sk sk-line" style="width:80%"></div><div class="sk sk-line" style="width:40%"></div></div></div>`).join("")}</div>`;
     }
-    const loadingLabel = (what) => `<p class="sr-only" role="status">Memuat ${esc(what)}…</p>`;
+    const loadingLabel = (what) => `<p class="sr-only" role="status">${esc(t("loading", what))}</p>`;
 
     function stateHtml({ title, body, actions = "" }) {
       return `<div class="state"><h2>${esc(title)}</h2><p>${esc(body)}</p>${actions}</div>`;
@@ -860,9 +1026,9 @@
     function errorState(err, what) {
       const offline = !navigator.onLine;
       return stateHtml({
-        title: offline ? "Kamu sedang offline" : `Gagal memuat ${what}`,
-        body: offline ? "Sambungkan internet, lalu coba lagi." : `Server sumber tidak merespons (${err.message}). Biasanya pulih dalam beberapa saat.`,
-        actions: `<button class="btn btn-primary" type="button" data-action="retry">Coba lagi</button>`,
+        title: offline ? t("offlineTitle") : t("failedTitle", what),
+        body: offline ? t("offlineBody") : t("failedBody", err.message),
+        actions: `<button class="btn btn-primary" type="button" data-action="retry">${t("retry")}</button>`,
       });
     }
 
@@ -873,15 +1039,15 @@
     function pagerHtml(page, hasNext, hrefFor) {
       const btn = (p, label, aria) => `<a class="page-btn" href="${hrefFor(p)}" ${aria ? `aria-label="${aria}"` : ""}>${label}</a>`;
       const parts = [];
-      parts.push(page > 1 ? btn(page - 1, icon("back"), "Halaman sebelumnya") : `<span class="page-btn" aria-disabled="true" aria-label="Halaman sebelumnya">${icon("back")}</span>`);
-      if (page > 2) parts.push(btn(1, "1", "Halaman 1"));
+      parts.push(page > 1 ? btn(page - 1, icon("back"), t("prevPage")) : `<span class="page-btn" aria-disabled="true" aria-label="${t("prevPage")}">${icon("back")}</span>`);
+      if (page > 2) parts.push(btn(1, "1", t("pageN", 1)));
       if (page > 3) parts.push(`<span class="page-gap" aria-hidden="true">…</span>`);
-      if (page > 1) parts.push(btn(page - 1, String(page - 1), `Halaman ${page - 1}`));
+      if (page > 1) parts.push(btn(page - 1, String(page - 1), t("pageN", page - 1)));
       parts.push(`<span class="page-btn" aria-current="page">${page}</span>`);
-      if (hasNext) parts.push(btn(page + 1, String(page + 1), `Halaman ${page + 1}`));
-      parts.push(hasNext ? btn(page + 1, icon("next"), "Halaman berikutnya") : `<span class="page-btn" aria-disabled="true" aria-label="Halaman berikutnya">${icon("next")}</span>`);
-      if (!hasNext) parts.push(`<span class="page-label">Ini halaman terakhir</span>`);
-      return `<nav class="pagination" aria-label="Pindah halaman">${parts.join("")}</nav>`;
+      if (hasNext) parts.push(btn(page + 1, String(page + 1), t("pageN", page + 1)));
+      parts.push(hasNext ? btn(page + 1, icon("next"), t("nextPage")) : `<span class="page-btn" aria-disabled="true" aria-label="${t("nextPage")}">${icon("next")}</span>`);
+      if (!hasNext) parts.push(`<span class="page-label">${t("lastPage")}</span>`);
+      return `<nav class="pagination" aria-label="${t("pagerNav")}">${parts.join("")}</nav>`;
     }
     function mountPager(container, page, itemsCount, pageSize, nextEp, hrefFor) {
       const optimistic = itemsCount >= pageSize;
@@ -908,7 +1074,28 @@
         else el.removeAttribute("aria-current");
       });
     }
-    function setTitle(t) { document.title = t ? `${t} · KomikRoll` : "KomikRoll"; }
+    const DEFAULT_TITLE = document.title;
+    const DEFAULT_DESC = document.querySelector('meta[name="description"]').content;
+    const DEFAULT_IMAGE = document.querySelector('meta[property="og:image"]').content;
+    function setMetaTag(sel, val) { const el = document.querySelector(sel); if (el) el.setAttribute(sel.startsWith("link") ? "href" : "content", val); }
+    // Keeps the tab title and the share/SEO tags in step with the current view.
+    function setTitle(t, { description, image } = {}) {
+      const title = t ? `${t} · KomikRoll` : DEFAULT_TITLE;
+      const desc = description ? (description.length > 160 ? description.slice(0, 157).trimEnd() + "…" : description) : DEFAULT_DESC;
+      const url = location.href.split("#")[0] + (location.hash && location.hash !== "#/" ? location.hash : "");
+      document.title = title;
+      setMetaTag('meta[name="description"]', desc);
+      setMetaTag('meta[property="og:title"]', title);
+      setMetaTag('meta[name="twitter:title"]', title);
+      setMetaTag('meta[property="og:description"]', desc);
+      setMetaTag('meta[name="twitter:description"]', desc);
+      setMetaTag('meta[property="og:url"]', url);
+      setMetaTag('meta[property="og:image"]', image || DEFAULT_IMAGE);
+      setMetaTag('meta[name="twitter:image"]', image || DEFAULT_IMAGE);
+      // Hash routes share one document, so only the home view claims the canonical root.
+      const robots = document.querySelector('meta[name="robots"]');
+      if (robots) robots.content = t ? "noindex, follow" : "index, follow, max-image-preview:large";
+    }
 
     // Links clicked inside the app start at the top; Back/Forward restore the previous position.
     document.addEventListener("click", (e) => {
@@ -957,11 +1144,11 @@
           case "comic": await viewDetail(ctx, seg[1] || ""); break;
           case "read": await viewReader(ctx); break;
           default:
-            setTitle("Tidak ditemukan");
-            app.innerHTML = stateHtml({ title: "Halaman tidak ditemukan", body: "Alamat ini tidak ada di KomikRoll.", actions: `<a class="btn btn-primary" href="#/">Ke beranda</a>` });
+            setTitle(t("notFound"));
+            app.innerHTML = stateHtml({ title: t("pageNotFound"), body: t("pageNotFoundBody"), actions: `<a class="btn btn-primary" href="#/">${t("toHome")}</a>` });
         }
       } catch (err) {
-        if (token === renderToken) app.innerHTML = errorState(err, "halaman");
+        if (token === renderToken) app.innerHTML = errorState(err, t("wPage"));
       }
     }
     app.addEventListener("click", (e) => {
@@ -975,10 +1162,10 @@
       const h = Object.entries(hist()).sort((a, b) => b[1].at - a[1].at).slice(0, 12);
       const continueHtml = page === 1 && h.length ? `
         <section class="section" aria-labelledby="cont-h">
-          <div class="section-head"><h2 class="section-title" id="cont-h">Lanjut baca</h2><a class="text-link" href="#/library?tab=history">Semua riwayat</a></div>
+          <div class="section-head"><h2 class="section-title" id="cont-h">${t("continueReading")}</h2><a class="text-link" href="#/library?tab=history">${t("allHistory")}</a></div>
           <div class="rail">${h.map(([slug, it]) => `
             <article class="card" data-new-slug="${esc(slug)}">
-              <a class="card-link" href="${readHref(it.chapterEp, slug)}" aria-label="Lanjut baca ${esc(it.title)}, ${esc(it.chapterTitle)}">
+              <a class="card-link" href="${readHref(it.chapterEp, slug)}" aria-label="${esc(t("continueAria", it.title, it.chapterTitle))}">
                 ${coverHtml(it.cover, it.title, { type: it.type })}
                 <span class="card-title">${esc(it.title)}</span>
               </a>
@@ -988,11 +1175,11 @@
         </section>` : "";
 
       app.innerHTML = `
-        <h1 class="sr-only">Beranda KomikRoll</h1>
+        <h1 class="sr-only">${t("homeH1")}</h1>
         ${continueHtml}
         <section class="section" aria-labelledby="new-h">
-          <div class="section-head"><h2 class="section-title" id="new-h">Update terbaru</h2>${page > 1 ? `<span class="small muted">Halaman ${page}</span>` : ""}</div>
-          <div id="newGrid">${loadingLabel("update terbaru")}${skeletonGrid(NEWEST_PAGE_SIZE)}</div>
+          <div class="section-head"><h2 class="section-title" id="new-h">${t("latestUpdates")}</h2>${page > 1 ? `<span class="small muted">${t("pageN", page)}</span>` : ""}</div>
+          <div id="newGrid">${loadingLabel(t("wLatest"))}${skeletonGrid(NEWEST_PAGE_SIZE)}</div>
           <div id="newPager"></div>
         </section>`;
       finishRender(token, key);
@@ -1003,14 +1190,14 @@
         const items = listOf(await api(`/comic/newest/page/${page}`));
         if (token !== renderToken) return;
         if (!items.length) {
-          gridEl.innerHTML = stateHtml({ title: "Halaman ini kosong", body: `Tidak ada update di halaman ${page}.`, actions: `<a class="btn btn-primary" href="#/">Ke halaman 1</a>` });
+          gridEl.innerHTML = stateHtml({ title: t("emptyPage"), body: t("emptyHomeBody", page), actions: `<a class="btn btn-primary" href="#/">${t("toPage1")}</a>` });
           return;
         }
         gridEl.innerHTML = `<div class="grid">${items.map((it) => comicCard(it, { showLatest: true })).join("")}</div>`;
         mountPager(document.getElementById("newPager"), page, items.length, NEWEST_PAGE_SIZE, `/comic/newest/page/${page + 1}`, (p) => (p === 1 ? "#/" : `#/?page=${p}`));
         finishRender(token, key);
       } catch (err) {
-        if (token === renderToken) gridEl.innerHTML = errorState(err, "update terbaru");
+        if (token === renderToken) gridEl.innerHTML = errorState(err, t("wLatest"));
       }
     }
 
@@ -1026,18 +1213,18 @@
         const p = o.page ?? 1; if (p > 1) q.set("page", p);
         return `#/browse?${q}`;
       };
-      setTitle(`Jelajah ${typeLabel(type)}${letter ? ` ${letter}` : ""}`);
+      setTitle(t("browseTitle", typeLabel(type), letter));
 
       app.innerHTML = `
-        <h1 class="page-title">Jelajah</h1>
-        <nav class="segmented" aria-label="Tipe komik">
-          ${TYPES.map((t) => `<a href="${hrefFor({ type: t, huruf: letter })}" ${t === type ? 'aria-current="page"' : ""}>${typeLabel(t)}</a>`).join("")}
+        <h1 class="page-title">${t("browse")}</h1>
+        <nav class="segmented" aria-label="${t("comicType")}">
+          ${TYPES.map((ty) => `<a href="${hrefFor({ type: ty, huruf: letter })}" ${ty === type ? 'aria-current="page"' : ""}>${typeLabel(ty)}</a>`).join("")}
         </nav>
-        <nav class="chip-row" aria-label="Filter abjad">
-          <a class="chip" href="${hrefFor({ huruf: "" })}" ${!letter ? 'aria-current="page"' : ""}>Semua</a>
-          ${LETTERS.map((l) => `<a class="chip" href="${hrefFor({ huruf: l })}" ${l === letter ? 'aria-current="page"' : ""} aria-label="Huruf ${l}">${l}</a>`).join("")}
+        <nav class="chip-row" aria-label="${t("letterFilter")}">
+          <a class="chip" href="${hrefFor({ huruf: "" })}" ${!letter ? 'aria-current="page"' : ""}>${t("all")}</a>
+          ${LETTERS.map((l) => `<a class="chip" href="${hrefFor({ huruf: l })}" ${l === letter ? 'aria-current="page"' : ""} aria-label="${t("letterAria", l)}">${l}</a>`).join("")}
         </nav>
-        <p class="small muted" style="margin-bottom:12px">${typeLabel(type)}${letter ? `, berawalan ${letter}` : ", semua judul"} · halaman ${page}</p>
+        <p class="small muted" style="margin-bottom:12px">${t("browseSummary", typeLabel(type), letter, page)}</p>
         <div id="browseGrid">${loadingLabel(typeLabel(type))}${skeletonGrid(18)}</div>
         <div id="browsePager"></div>`;
       finishRender(token, key);
@@ -1051,8 +1238,8 @@
         if (token !== renderToken) return;
         if (!items.length) {
           gridEl.innerHTML = page > 1
-            ? stateHtml({ title: "Sudah sampai ujung", body: `Halaman ${page} tidak berisi judul lagi.`, actions: `<a class="btn btn-primary" href="${hrefFor({ page: 1 })}">Ke halaman 1</a>` })
-            : stateHtml({ title: "Belum ada judul", body: `Tidak ada ${typeLabel(type)} yang berawalan ${letter}. Coba huruf lain.`, actions: `<a class="btn" href="${hrefFor({ huruf: "" })}">Lihat semua</a>` });
+            ? stateHtml({ title: t("endReached"), body: t("endBody", page), actions: `<a class="btn btn-primary" href="${hrefFor({ page: 1 })}">${t("toPage1")}</a>` })
+            : stateHtml({ title: t("noTitles"), body: t("noTitlesBody", typeLabel(type), letter), actions: `<a class="btn" href="${hrefFor({ huruf: "" })}">${t("seeAll")}</a>` });
           return;
         }
         gridEl.innerHTML = `<div class="grid">${items.map((it) => comicCard(it, { defaultType: type, withMeta: true })).join("")}</div>`;
@@ -1060,22 +1247,23 @@
         mountPager(document.getElementById("browsePager"), page, items.length, LIST_PAGE_SIZE, `${base}&page=${page + 1}`, (p) => hrefFor({ page: p }));
         finishRender(token, key);
       } catch (err) {
-        if (token === renderToken) gridEl.innerHTML = errorState(err, "daftar komik");
+        if (token === renderToken) gridEl.innerHTML = errorState(err, t("wList"));
       }
     }
 
     /* ---------------- View: Top ---------------- */
-    const PERIODS = { daily: "Harian", weekly: "Mingguan", monthly: "Bulanan" };
+    const PERIOD_KEYS = ["daily", "weekly", "monthly"];
     async function viewTop({ params, token, key }) {
-      const period = PERIODS[params.get("period")] ? params.get("period") : "daily";
-      setTitle(`Populer ${PERIODS[period]}`);
+      const PERIODS = t("periods");
+      const period = PERIOD_KEYS.includes(params.get("period")) ? params.get("period") : "daily";
+      setTitle(t("topTitle", PERIODS[period]));
       app.innerHTML = `
-        <h1 class="page-title">Populer</h1>
-        <nav class="segmented" aria-label="Periode">
-          ${Object.entries(PERIODS).map(([k, v]) => `<a href="#/top?period=${k}" ${k === period ? 'aria-current="page"' : ""}>${v}</a>`).join("")}
+        <h1 class="page-title">${t("top")}</h1>
+        <nav class="segmented" aria-label="${t("period")}">
+          ${PERIOD_KEYS.map((k) => `<a href="#/top?period=${k}" ${k === period ? 'aria-current="page"' : ""}>${PERIODS[k]}</a>`).join("")}
         </nav>
         <p class="small muted" id="topUpdated" style="margin-bottom:8px">&nbsp;</p>
-        <div id="topList">${loadingLabel("komik populer")}${skeletonList(10)}</div>`;
+        <div id="topList">${loadingLabel(t("wTop"))}${skeletonList(10)}</div>`;
       finishRender(token, key);
       const listEl = document.getElementById("topList");
       try {
@@ -1087,38 +1275,38 @@
         if (json && json.updated_at) {
           const d = new Date(json.updated_at.replace(" ", "T"));
           if (!isNaN(d)) document.getElementById("topUpdated").textContent =
-            `Peringkat diperbarui ${d.toLocaleString("id-ID", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}`;
+            t("rankUpdated", d.toLocaleString(t("locale"), { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }));
         }
         if (!items.length) {
-          listEl.innerHTML = stateHtml({ title: "Peringkat belum tersedia", body: `Belum ada data populer ${PERIODS[period].toLowerCase()}. Coba periode lain.` });
+          listEl.innerHTML = stateHtml({ title: t("noRank"), body: t("noRankBody", PERIODS[period]) });
           return;
         }
         listEl.innerHTML = `<ol class="rank-list">${items.map((it, i) => {
           const slug = slugFromEp(it.slug || it.endpoint);
           const rank = i + 1;
           return `<li><a class="rank-item ${rank <= 3 ? "top3" : ""}" href="${comicHref(slug)}">
-              <span class="rank-num" aria-label="Peringkat ${rank}">${rank}</span>
+              <span class="rank-num" aria-label="${t("rankAria", rank)}">${rank}</span>
               ${coverHtml(it.cover || it.image, it.title, { w: 104 })}
-              <span><span class="rank-title">${esc(it.title)}</span>${it.hits ? `<span class="small muted">${Number(it.hits).toLocaleString("id-ID")} kali dibuka</span>` : ""}</span>
+              <span><span class="rank-title">${esc(it.title)}</span>${it.hits ? `<span class="small muted">${t("views", Number(it.hits).toLocaleString(t("locale")))}</span>` : ""}</span>
             </a></li>`;
         }).join("")}</ol>`;
         finishRender(token, key);
       } catch (err) {
-        if (token === renderToken) listEl.innerHTML = errorState(err, "peringkat");
+        if (token === renderToken) listEl.innerHTML = errorState(err, t("wRank"));
       }
     }
 
     /* ---------------- View: Search ---------------- */
     let searchTimer;
     async function viewSearch({ params, token }) {
-      setTitle("Cari");
+      setTitle(t("search"));
       const q = params.get("q") || "";
       app.innerHTML = `
-        <h1 class="page-title">Cari komik</h1>
+        <h1 class="page-title">${t("searchH1")}</h1>
         <form class="search-field" role="search" id="searchForm">
-          <label for="searchInput">Judul komik</label>
+          <label for="searchInput">${t("searchLabel")}</label>
           <span class="input-icon">${icon("search")}</span>
-          <input class="input" id="searchInput" type="search" enterkeyhint="search" autocomplete="off" placeholder="Contoh: solo leveling" value="${esc(q)}" />
+          <input class="input" id="searchInput" type="search" enterkeyhint="search" autocomplete="off" placeholder="${t("searchPh")}" value="${esc(q)}" />
         </form>
         <div id="searchResults" aria-live="polite"></div>`;
       const input = document.getElementById("searchInput");
@@ -1138,42 +1326,42 @@
       if (q.length < 2) {
         const recent = store.get("kr:recentSearch", []);
         box.innerHTML = recent.length ? `
-          <section class="section"><div class="section-head"><h2 class="section-title">Pencarian terakhir</h2>
-            <button class="btn btn-ghost small" type="button" id="clearRecent">Hapus</button></div>
+          <section class="section"><div class="section-head"><h2 class="section-title">${t("recentSearches")}</h2>
+            <button class="btn btn-ghost small" type="button" id="clearRecent">${t("clear")}</button></div>
             <div class="tag-row">${recent.map((r) => `<a class="chip" href="#/search?q=${encodeURIComponent(r)}">${esc(r)}</a>`).join("")}</div>
-          </section>` : `<p class="muted small">Ketik minimal 2 huruf. Hasil muncul otomatis.</p>`;
+          </section>` : `<p class="muted small">${t("searchHint")}</p>`;
         document.getElementById("clearRecent")?.addEventListener("click", () => { store.set("kr:recentSearch", []); renderSearchResults("", token); });
         return;
       }
-      box.innerHTML = `${loadingLabel("hasil pencarian")}${skeletonGrid(6)}`;
+      box.innerHTML = `${loadingLabel(t("wResults"))}${skeletonGrid(6)}`;
       const myToken = renderToken;
       try {
         const items = listOf(await api(`/comic/search/${encodeURIComponent(q)}`));
         const input = document.getElementById("searchInput");
         if (myToken !== renderToken || !input || input.value.trim() !== q) return;
         if (!items.length) {
-          box.innerHTML = stateHtml({ title: `Tidak ada hasil untuk “${q}”`, body: "Coba kata kunci yang lebih pendek, atau cari lewat Jelajah per abjad.", actions: `<a class="btn" href="#/browse">Buka Jelajah</a>` });
+          box.innerHTML = stateHtml({ title: t("noResults", q), body: t("noResultsBody"), actions: `<a class="btn" href="#/browse">${t("openBrowse")}</a>` });
           return;
         }
         const recent = [q, ...store.get("kr:recentSearch", []).filter((r) => r.toLowerCase() !== q.toLowerCase())].slice(0, 8);
         store.set("kr:recentSearch", recent);
-        box.innerHTML = `<p class="small muted" style="margin-bottom:12px">${items.length} hasil untuk “${esc(q)}”</p><div class="grid">${items.map((it) => comicCard(it, { withMeta: true })).join("")}</div>`;
+        box.innerHTML = `<p class="small muted" style="margin-bottom:12px">${esc(t("resultsFor", items.length, q))}</p><div class="grid">${items.map((it) => comicCard(it, { withMeta: true })).join("")}</div>`;
         watchCardMeta(box);
       } catch (err) {
-        if (myToken === renderToken) box.innerHTML = errorState(err, "hasil pencarian");
+        if (myToken === renderToken) box.innerHTML = errorState(err, t("wResults"));
       }
     }
 
     /* ---------------- View: Library ---------------- */
     function viewLibrary({ params, token, key }) {
       const tab = params.get("tab") === "history" ? "history" : "favs";
-      setTitle("Pustaka");
+      setTitle(t("library"));
       let body = "";
       if (tab === "favs") {
         const f = Object.entries(favs()).sort((a, b) => b[1].at - a[1].at);
         body = f.length
           ? `<div class="grid">${f.map(([slug, it]) => comicCard({ slug, title: it.title, image: it.cover, type: it.type }, { trackNew: true })).join("")}</div>`
-          : stateHtml({ title: "Belum ada komik tersimpan", body: "Buka halaman komik lalu ketuk Simpan. Komiknya akan muncul di sini.", actions: `<a class="btn btn-primary" href="#/top">Lihat yang populer</a>` });
+          : stateHtml({ title: t("noSaved"), body: t("noSavedBody"), actions: `<a class="btn btn-primary" href="#/top">${t("seePopular")}</a>` });
       } else {
         const h = Object.entries(hist()).sort((a, b) => b[1].at - a[1].at);
         body = h.length
@@ -1184,24 +1372,24 @@
                   <a href="${comicHref(slug, it.type)}">${esc(it.title)}</a>
                   <span class="small muted">${esc(it.chapterTitle)}${progressLabel(it)} · ${timeAgo(it.at)}</span>
                 </div>
-                <a class="btn" href="${readHref(it.chapterEp, slug)}" aria-label="Lanjut baca ${esc(it.title)}">Lanjut</a>
+                <a class="btn" href="${readHref(it.chapterEp, slug)}" aria-label="${esc(t("continueBtnAria", it.title))}">${t("continueBtn")}</a>
               </li>`).join("")}</ul>
-              <div style="margin-top:20px"><button class="btn btn-ghost" type="button" id="clearHistory">Hapus semua riwayat</button></div>`
-          : stateHtml({ title: "Riwayat masih kosong", body: "Chapter yang kamu baca akan tercatat di sini, jadi gampang dilanjutkan.", actions: `<a class="btn btn-primary" href="#/">Lihat update terbaru</a>` });
+              <div style="margin-top:20px"><button class="btn btn-ghost" type="button" id="clearHistory">${t("clearHistory")}</button></div>`
+          : stateHtml({ title: t("noHistory"), body: t("noHistoryBody"), actions: `<a class="btn btn-primary" href="#/">${t("seeLatest")}</a>` });
       }
       app.innerHTML = `
-        <h1 class="page-title">Pustaka</h1>
-        <nav class="segmented" aria-label="Isi pustaka">
-          <a href="#/library" ${tab === "favs" ? 'aria-current="page"' : ""}>Tersimpan</a>
-          <a href="#/library?tab=history" ${tab === "history" ? 'aria-current="page"' : ""}>Riwayat</a>
+        <h1 class="page-title">${t("library")}</h1>
+        <nav class="segmented" aria-label="${t("libSections")}">
+          <a href="#/library" ${tab === "favs" ? 'aria-current="page"' : ""}>${t("saved")}</a>
+          <a href="#/library?tab=history" ${tab === "history" ? 'aria-current="page"' : ""}>${t("history")}</a>
         </nav>
-        <p class="small muted" style="margin-bottom:16px">Disimpan di browser ini saja.</p>
+        <p class="small muted" style="margin-bottom:16px">${t("localOnly")}</p>
         ${body}`;
       document.getElementById("clearHistory")?.addEventListener("click", () => {
-        if (!confirm("Hapus semua riwayat baca? Tanda chapter yang sudah dibaca juga ikut hilang.")) return;
+        if (!confirm(t("confirmClear"))) return;
         store.set("kr:history", {});
         route();
-        toast("Riwayat dihapus");
+        toast(t("historyCleared"));
       });
       finishRender(token, key);
       markNewChapters(app, token);
@@ -1251,8 +1439,8 @@
 
     /* ---------------- View: Detail ---------------- */
     async function viewDetail({ params, token, key }, slug) {
-      setTitle("Memuat…");
-      app.innerHTML = `${loadingLabel("detail komik")}
+      setTitle(t("loadingTitle"));
+      app.innerHTML = `${loadingLabel(t("wDetail"))}
         <div aria-hidden="true">
           <div class="detail-hero"><div class="sk sk-cover"></div><div><div class="sk sk-title" style="width:85%"></div><div class="sk sk-line" style="width:60%"></div><div class="sk sk-line" style="width:40%;margin-top:16px"></div></div></div>
           <div class="sk" style="height:44px;margin-bottom:16px;border-radius:10px"></div>
@@ -1263,25 +1451,28 @@
       try {
         comic = await getComic(slug, params.get("t"));
       } catch (err) {
-        if (token === renderToken) app.innerHTML = errorState(err, "detail komik");
+        if (token === renderToken) app.innerHTML = errorState(err, t("wDetail"));
         return;
       }
       if (token !== renderToken) return;
       if (!comic) {
-        setTitle("Tidak ditemukan");
-        app.innerHTML = stateHtml({ title: "Komik tidak ditemukan", body: "Judul ini mungkin sudah dihapus dari sumber.", actions: `<a class="btn btn-primary" href="#/search">Cari judul lain</a>` });
+        setTitle(t("notFound"));
+        app.innerHTML = stateHtml({ title: t("comicNotFound"), body: t("comicNotFoundBody"), actions: `<a class="btn btn-primary" href="#/search">${t("searchOther")}</a>` });
         return;
       }
-      setTitle(comic.title);
+      setTitle(comic.title, {
+        description: `Baca ${comic.title}${typeLabel(comic.type) ? ` (${typeLabel(comic.type)})` : ""} bahasa Indonesia di KomikRoll. ${comic.synopsis || ""}`.replace(/\s+/g, " ").trim(),
+        image: comic.cover,
+      });
       markSeen(comic);
       putMeta(slug, { n: comic.chapters.length, status: comic.status });
       const h = hist()[slug];
       const readSet = new Set(h?.read || []);
       const first = comic.chapters[comic.chapters.length - 1];
       let primary = "";
-      if (h && h.chapterEp) primary = `<a class="btn btn-primary btn-block" href="${readHref(h.chapterEp, slug)}"><span>Lanjut ${esc(shortChapter(h.chapterTitle))}${progressLabel(h)}</span></a>`;
-      else if (first) primary = `<a class="btn btn-primary btn-block" href="${readHref(first.ep, slug)}"><span>Mulai baca ${esc(shortChapter(first.title))}</span></a>`;
-      else primary = `<button class="btn btn-block" type="button" disabled>Belum ada chapter</button>`;
+      if (h && h.chapterEp) primary = `<a class="btn btn-primary btn-block" href="${readHref(h.chapterEp, slug)}"><span>${esc(t("continueCh", shortChapter(h.chapterTitle), progressLabel(h)))}</span></a>`;
+      else if (first) primary = `<a class="btn btn-primary btn-block" href="${readHref(first.ep, slug)}"><span>${esc(t("startCh", shortChapter(first.title)))}</span></a>`;
+      else primary = `<button class="btn btn-block" type="button" disabled>${t("noChapters")}</button>`;
       const isFav = !!favs()[slug];
 
       app.innerHTML = `
@@ -1290,36 +1481,36 @@
           <div>
             <h1 class="detail-title">${esc(comic.title)}</h1>
             ${comic.altTitle ? `<p class="alt-title">${esc(comic.altTitle)}</p>` : ""}
-            ${comic.author ? `<p class="alt-title">oleh ${esc(comic.author)}</p>` : ""}
+            ${comic.author ? `<p class="alt-title">${esc(t("by", comic.author))}</p>` : ""}
             <div class="tag-row detail-meta">
               ${comic.type ? `<span class="tag">${esc(comic.type)}</span>` : ""}
-              ${comic.status ? `<span class="tag">${esc(comic.status)}</span>` : ""}
+              ${statusLabel(comic.status) ? `<span class="tag">${esc(statusLabel(comic.status))}</span>` : ""}
               ${comic.theme ? `<span class="tag">${esc(comic.theme)}</span>` : ""}
-              <span class="tag">${comic.chapters.length} chapter</span>
+              <span class="tag">${t("chapters", comic.chapters.length)}</span>
             </div>
           </div>
         </div>
         <div class="detail-actions">
           ${primary}
-          <button class="btn" type="button" id="favBtn" aria-pressed="${isFav}">${icon("bookmark")}<span>${isFav ? "Tersimpan" : "Simpan"}</span></button>
+          <button class="btn" type="button" id="favBtn" aria-pressed="${isFav}">${icon("bookmark")}<span>${isFav ? t("saved") : t("save")}</span></button>
         </div>
         ${comic.synopsis ? `<section class="section" aria-labelledby="syn-h">
-          <h2 class="sr-only" id="syn-h">Sinopsis</h2>
+          <h2 class="sr-only" id="syn-h">${t("synopsis")}</h2>
           <p class="synopsis clamped" id="synopsis">${esc(comic.synopsis)}</p>
-          <button class="text-link" type="button" id="synToggle" aria-expanded="false" aria-controls="synopsis" hidden style="background:none;border:0">Selengkapnya</button>
-          ${comic.genres.length ? `<div class="tag-row genres" aria-label="Genre">${comic.genres.map((g) => `<span class="tag">${esc(g)}</span>`).join("")}</div>` : ""}
+          <button class="text-link" type="button" id="synToggle" aria-expanded="false" aria-controls="synopsis" hidden style="background:none;border:0">${t("more")}</button>
+          ${comic.genres.length ? `<div class="tag-row genres" aria-label="${t("genre")}">${comic.genres.map((g) => `<span class="tag">${esc(g)}</span>`).join("")}</div>` : ""}
         </section>` : ""}
         <section class="section" aria-labelledby="ch-h">
-          <div class="section-head"><h2 class="section-title" id="ch-h">Daftar chapter</h2></div>
+          <div class="section-head"><h2 class="section-title" id="ch-h">${t("chapterList")}</h2></div>
           ${comic.chapters.length ? `
             <div class="chapter-tools">
-              <div><label class="sr-only" for="chFilter">Cari nomor chapter</label>
-                <input class="input plain" id="chFilter" type="search" inputmode="decimal" placeholder="Cari nomor chapter" autocomplete="off" /></div>
-              <button class="btn" type="button" id="chSort" aria-label="Urutan: terbaru dulu">${icon("sort")}<span>Terbaru</span></button>
+              <div><label class="sr-only" for="chFilter">${t("findChapter")}</label>
+                <input class="input plain" id="chFilter" type="search" inputmode="decimal" placeholder="${t("findChapter")}" autocomplete="off" /></div>
+              <button class="btn" type="button" id="chSort" aria-label="${t("sortAria", true)}">${icon("sort")}<span>${t("newest")}</span></button>
             </div>
             <ul class="chapter-list" id="chList"></ul>
             <div id="chMore"></div>`
-          : stateHtml({ title: "Belum ada chapter", body: "Sumber belum menyediakan chapter untuk judul ini." })}
+          : stateHtml({ title: t("noChapters"), body: t("noChaptersBody") })}
         </section>`;
 
       // Synopsis expand
@@ -1329,7 +1520,7 @@
         synBtn.hidden = false;
         synBtn.addEventListener("click", () => {
           const open = syn.classList.toggle("clamped") === false;
-          synBtn.textContent = open ? "Ringkas" : "Selengkapnya";
+          synBtn.textContent = open ? t("less") : t("more");
           synBtn.setAttribute("aria-expanded", String(open));
         });
       }
@@ -1337,8 +1528,8 @@
       document.getElementById("favBtn").addEventListener("click", (e) => {
         const on = toggleFav(comic);
         e.currentTarget.setAttribute("aria-pressed", String(on));
-        e.currentTarget.querySelector("span").textContent = on ? "Tersimpan" : "Simpan";
-        toast(on ? "Disimpan ke Pustaka" : "Dihapus dari Pustaka");
+        e.currentTarget.querySelector("span").textContent = on ? t("saved") : t("save");
+        toast(on ? t("savedToast") : t("removedToast"));
       });
 
       // Chapter list: filter, sort, incremental render
@@ -1358,7 +1549,7 @@
               : list.filter((c) => c.title.toLowerCase().includes(q.toLowerCase()));
           }
           if (!list.length) {
-            listEl.innerHTML = `<li style="padding:20px 4px" class="muted">Tidak ada chapter bernomor “${esc(q)}”.</li>`;
+            listEl.innerHTML = `<li style="padding:20px 4px" class="muted">${esc(t("noChapterMatch", q))}</li>`;
             moreEl.innerHTML = "";
             return;
           }
@@ -1367,18 +1558,18 @@
             const isRead = readSet.has(c.ep);
             return `<li><a class="chapter-row ${isRead ? "read" : ""} ${isCurrent ? "current" : ""}" href="${readHref(c.ep, slug)}">
                 <span class="ch-name">${esc(c.title)}</span>
-                <span class="ch-state">${isCurrent ? "Terakhir dibaca" : isRead ? "Sudah dibaca" : esc(c.date)}</span>
+                <span class="ch-state">${isCurrent ? t("lastRead") : isRead ? t("alreadyRead") : esc(c.date)}</span>
               </a></li>`;
           }).join("");
           const rest = list.length - shown;
-          moreEl.innerHTML = rest > 0 ? `<button class="btn btn-block" type="button" style="margin-top:12px">Tampilkan ${Math.min(rest, CHAPTER_BATCH)} lagi (sisa ${rest})</button>` : "";
+          moreEl.innerHTML = rest > 0 ? `<button class="btn btn-block" type="button" style="margin-top:12px">${t("showMore", Math.min(rest, CHAPTER_BATCH), rest)}</button>` : "";
           moreEl.querySelector("button")?.addEventListener("click", () => { shown += CHAPTER_BATCH; renderChapters(); });
         };
         filterEl.addEventListener("input", () => { shown = CHAPTER_BATCH; renderChapters(); });
         sortBtn.addEventListener("click", () => {
           newestFirst = !newestFirst; shown = CHAPTER_BATCH;
-          sortBtn.querySelector("span").textContent = newestFirst ? "Terbaru" : "Terlama";
-          sortBtn.setAttribute("aria-label", `Urutan: ${newestFirst ? "terbaru" : "terlama"} dulu`);
+          sortBtn.querySelector("span").textContent = newestFirst ? t("newest") : t("oldest");
+          sortBtn.setAttribute("aria-label", t("sortAria", newestFirst));
           renderChapters();
         });
         renderChapters();
@@ -1402,21 +1593,21 @@
     async function viewReader({ params, token }) {
       const ep = cleanEp(params.get("ep") || "");
       const slug = params.get("c") || comicSlugFromChapter(ep);
-      setTitle("Membaca");
+      setTitle(t("reading"));
       app.innerHTML = `
         <header class="reader-top"><div class="reader-top-inner">
-          <a class="icon-btn" href="${comicHref(slug)}" aria-label="Kembali ke detail komik">${icon("back")}</a>
-          <div class="reader-heading"><p class="comic-name">&nbsp;</p><h1>Memuat chapter…</h1></div>
+          <a class="icon-btn" href="${comicHref(slug)}" aria-label="${t("backToDetail")}">${icon("back")}</a>
+          <div class="reader-heading"><p class="comic-name">&nbsp;</p><h1>${t("loadingChapter")}</h1></div>
         </div><div class="progress" aria-hidden="true"><span></span></div></header>
-        <div class="pages" aria-busy="true">${loadingLabel("halaman chapter")}<div class="page" aria-hidden="true"></div></div>`;
+        <div class="pages" aria-busy="true">${loadingLabel(t("wPages"))}<div class="page" aria-hidden="true"></div></div>`;
 
       const [chapRes, comicRes] = await Promise.allSettled([fetchChapter(ep), getComic(slug)]);
       if (token !== renderToken) return;
       const comic = comicRes.status === "fulfilled" ? comicRes.value : null;
       if (chapRes.status === "rejected" || !chapRes.value || !chapRes.value.images.length) {
         const err = chapRes.status === "rejected" ? chapRes.reason : null;
-        app.innerHTML = `<div style="padding:24px 16px; max-width:640px; margin:0 auto">${err ? errorState(err, "chapter") :
-          stateHtml({ title: "Chapter tidak bisa dibuka", body: "Gambar chapter ini tidak tersedia di sumber.", actions: `<a class="btn btn-primary" href="${comicHref(slug)}">Kembali ke daftar chapter</a>` })}</div>`;
+        app.innerHTML = `<div style="padding:24px 16px; max-width:640px; margin:0 auto">${err ? errorState(err, t("wChapter")) :
+          stateHtml({ title: t("chapterUnavailable"), body: t("chapterUnavailableBody"), actions: `<a class="btn btn-primary" href="${comicHref(slug)}">${t("backToList")}</a>` })}</div>`;
         return;
       }
       const chap = chapRes.value;
@@ -1435,12 +1626,12 @@
       const isEager = (i) => i < 3 || (resumePage && i >= eagerFrom && i < eagerFrom + 3);
 
       const navBtn = (c, dir) => c
-        ? `<a class="btn" href="${readHref(c.ep, slug)}" aria-label="${dir === "prev" ? "Chapter sebelumnya" : "Chapter berikutnya"}: ${esc(c.title)}">${dir === "prev" ? icon("back") : ""}<span>${dir === "prev" ? "Seb." : "Lanjut"}</span>${dir === "next" ? icon("next") : ""}</a>`
-        : `<button class="btn" type="button" disabled aria-label="${dir === "prev" ? "Tidak ada chapter sebelumnya" : "Belum ada chapter berikutnya"}">${dir === "prev" ? icon("back") : ""}<span>${dir === "prev" ? "Seb." : "Lanjut"}</span>${dir === "next" ? icon("next") : ""}</button>`;
+        ? `<a class="btn" href="${readHref(c.ep, slug)}" aria-label="${esc(dir === "prev" ? t("prevChAria", c.title) : t("nextChAria", c.title))}">${dir === "prev" ? icon("back") : ""}<span>${dir === "prev" ? t("prevShort") : t("nextShort")}</span>${dir === "next" ? icon("next") : ""}</a>`
+        : `<button class="btn" type="button" disabled aria-label="${dir === "prev" ? t("noPrev") : t("noNext")}">${dir === "prev" ? icon("back") : ""}<span>${dir === "prev" ? t("prevShort") : t("nextShort")}</span>${dir === "next" ? icon("next") : ""}</button>`;
 
       app.innerHTML = `
         <header class="reader-top"><div class="reader-top-inner">
-          <a class="icon-btn" href="${comicHref(slug, comic?.type)}" aria-label="Kembali ke ${esc(comicTitle)}">${icon("back")}</a>
+          <a class="icon-btn" href="${comicHref(slug, comic?.type)}" aria-label="${esc(t("backTo", comicTitle))}">${icon("back")}</a>
           <div class="reader-heading"><p class="comic-name">${esc(comicTitle)}</p><h1>${esc(cur.title)}</h1></div>
           <span class="small muted" id="pageCounter" aria-live="off" style="padding:0 8px;white-space:nowrap">1/${chap.images.length}</span>
         </div><div class="progress" aria-hidden="true"><span id="progressBar"></span></div></header>
@@ -1448,28 +1639,28 @@
           ${chap.images.map((url, i) => `
             <figure class="page">
               <span class="page-num" aria-hidden="true">${i + 1}</span>
-              <img ${isEager(i) ? "src" : "data-src"}="${esc(proxied(url))}" data-direct="${esc(directOf(url))}" alt="Halaman ${i + 1}" referrerpolicy="no-referrer"
+              <img ${isEager(i) ? "src" : "data-src"}="${esc(proxied(url))}" data-direct="${esc(directOf(url))}" alt="${t("pageAlt", i + 1)}" referrerpolicy="no-referrer"
                 ${isEager(i) && i < 2 ? 'fetchpriority="high"' : ""} decoding="async" />
-              <div class="page-retry"><p class="small muted">Halaman ${i + 1} gagal dimuat</p><button class="btn" type="button" data-retry>Muat ulang</button></div>
+              <div class="page-retry"><p class="small muted">${t("pageFailed", i + 1)}</p><button class="btn" type="button" data-retry>${t("reload")}</button></div>
             </figure>`).join("")}
         </div>
         <section class="chapter-end" aria-labelledby="end-h">
-          <h2 id="end-h">Selesai: ${esc(cur.title)}</h2>
-          <p class="muted small">${next ? `Berikutnya: ${esc(next.title)}` : "Ini chapter terbaru yang tersedia."}</p>
-          ${next ? `<a class="btn btn-primary btn-block" style="max-width:360px" href="${readHref(next.ep, slug)}"><span>Baca ${esc(shortChapter(next.title))}</span></a>`
-                 : `<a class="btn btn-block" style="max-width:360px" href="${comicHref(slug, comic?.type)}">Kembali ke daftar chapter</a>`}
+          <h2 id="end-h">${esc(t("finished", cur.title))}</h2>
+          <p class="muted small">${next ? esc(t("nextUp", next.title)) : t("latestAvailable")}</p>
+          ${next ? `<a class="btn btn-primary btn-block" style="max-width:360px" href="${readHref(next.ep, slug)}"><span>${esc(t("readCh", shortChapter(next.title)))}</span></a>`
+                 : `<a class="btn btn-block" style="max-width:360px" href="${comicHref(slug, comic?.type)}">${t("backToList")}</a>`}
         </section>
-        <nav class="reader-bottom" aria-label="Navigasi chapter"><div class="reader-bottom-inner">
+        <nav class="reader-bottom" aria-label="${t("chapterNav")}"><div class="reader-bottom-inner">
           ${navBtn(prev, "prev")}
           <button class="btn" type="button" id="pickChapter" ${list.length ? "" : "disabled"} aria-haspopup="dialog">${icon("list")}<span>${esc(shortChapter(cur.title))}</span></button>
           ${navBtn(next, "next")}
         </div></nav>
         <dialog class="sheet" id="chapterSheet" aria-labelledby="sheet-h">
-          <div class="sheet-head"><h2 id="sheet-h">Pilih chapter</h2>
-            <button class="icon-btn" type="button" id="closeSheet" aria-label="Tutup">${icon("close")}</button></div>
+          <div class="sheet-head"><h2 id="sheet-h">${t("pickChapter")}</h2>
+            <button class="icon-btn" type="button" id="closeSheet" aria-label="${t("close")}">${icon("close")}</button></div>
           <div class="sheet-body"><ul class="chapter-list">
             ${list.map((c) => `<li><a class="chapter-row ${c.ep === cur.ep ? "current" : ""}" href="${readHref(c.ep, slug)}" ${c.ep === cur.ep ? 'aria-current="true"' : ""}>
-              <span class="ch-name">${esc(c.title)}</span><span class="ch-state">${c.ep === cur.ep ? "Sedang dibaca" : ""}</span></a></li>`).join("")}
+              <span class="ch-name">${esc(c.title)}</span><span class="ch-state">${c.ep === cur.ep ? t("nowReading") : ""}</span></a></li>`).join("")}
           </ul></div>
         </dialog>`;
 
@@ -1580,7 +1771,7 @@
 
       if (anchor) {
         toAnchor();
-        toast(`Lanjut dari halaman ${resumePage}`);
+        toast(t("resumeToast", resumePage));
       }
       const onTap = (e) => { if (e.target.closest("#pages") && !e.target.closest("button")) document.body.classList.toggle("chrome-hidden"); };
       const onKey = (e) => {

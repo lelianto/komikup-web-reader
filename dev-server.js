@@ -40,6 +40,27 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+  // Static files at the project root (icons, manifest, robots, sitemap), same as Vercel serves them.
+  const STATIC = {
+    "/favicon.ico": "image/x-icon",
+    "/icon.svg": "image/svg+xml",
+    "/icon-192.png": "image/png",
+    "/icon-512.png": "image/png",
+    "/icon-maskable-512.png": "image/png",
+    "/apple-touch-icon.png": "image/png",
+    "/og-image.png": "image/png",
+    "/site.webmanifest": "application/manifest+json",
+    "/robots.txt": "text/plain; charset=utf-8",
+    "/sitemap.xml": "application/xml; charset=utf-8",
+  };
+  if (STATIC[parsedUrl.pathname]) {
+    return fs.readFile(path.join(__dirname, parsedUrl.pathname), (err, content) => {
+      if (err) { res.writeHead(404); return res.end(); }
+      res.writeHead(200, { "Content-Type": STATIC[parsedUrl.pathname] });
+      res.end(content);
+    });
+  }
+
   // Layani index.html
   const filePath = path.join(__dirname, "index.html");
   fs.readFile(filePath, (err, content) => {

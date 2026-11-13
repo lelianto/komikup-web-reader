@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://komikup-web-reader.vercel.app/sitemap.xml
