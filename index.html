@@ -1081,7 +1081,9 @@
       try {
         const json = await api("/comic/top");
         if (token !== renderToken) return;
-        const items = (json && json[period]) || [];
+        // Entries without a cover point at slugs whose detail page is empty (checked on all three
+        // periods: every coverless entry had 0 chapters), so they are left out and ranks renumbered.
+        const items = ((json && json[period]) || []).filter((it) => it.cover || it.image);
         if (json && json.updated_at) {
           const d = new Date(json.updated_at.replace(" ", "T"));
           if (!isNaN(d)) document.getElementById("topUpdated").textContent =
@@ -1093,7 +1095,7 @@
         }
         listEl.innerHTML = `<ol class="rank-list">${items.map((it, i) => {
           const slug = slugFromEp(it.slug || it.endpoint);
-          const rank = it.rank || i + 1;
+          const rank = i + 1;
           return `<li><a class="rank-item ${rank <= 3 ? "top3" : ""}" href="${comicHref(slug)}">
               <span class="rank-num" aria-label="Peringkat ${rank}">${rank}</span>
               ${coverHtml(it.cover || it.image, it.title, { w: 104 })}
